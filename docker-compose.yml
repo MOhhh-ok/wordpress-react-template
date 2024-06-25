@@ -1,0 +1,36 @@
+version: '3.1'
+
+services:
+  mysql:
+    container_name: mysql
+    volumes: 
+      - ./docker-data/mysql/:/var/lib/mysql
+    hostname: mysql
+    image: mysql:5.7
+    platform: linux/x86_64
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wordpress
+      MYSQL_PASSWORD: wordpress
+
+  wordpress:
+    container_name: wordpress
+    hostname: wordpress
+    image: wordpress:6.5.4-php8.1-apache
+    volumes:
+      - ./docker-data/wordpress/themes:/var/www/html/wp-content/themes
+      - ./docker-data/wordpress/plugins:/var/www/html/wp-content/plugins
+      - ./docker-data/wordpress/uploads:/var/www/html/wp-content/uploads
+      - ./plugin-x:/var/www/html/wp-content/plugins/plugin-x
+    links:
+      - mysql
+    depends_on:
+      - mysql
+    ports:
+      - "8080:80"
+    environment:
+      - WORDPRESS_DB_HOST=mysql
+      - WORDPRESS_DB_NAME=wordpress
+      - WORDPRESS_DB_USER=wordpress
+      - WORDPRESS_DB_PASSWORD=wordpress
