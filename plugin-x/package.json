@@ -1,7 +1,8 @@
 {
   "scripts": {
-    "build": "webpack && composer dump-autoload",
-    "watch": "webpack -w"
+    "build": "webpack --mode production && composer dump-autoload",
+    "dev": "webpack -w",
+    "archive": "yarn run build && php archiver.php"
   },
   "dependencies": {
     "react": "^18.2.0",
